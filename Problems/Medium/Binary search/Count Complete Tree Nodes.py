@@ -51,7 +51,7 @@ class Solution:
             return 1
         # Last level nodes are enumerated from 0 to 2**d - 1 (left -> right).
         # Perform binary search to check how many nodes exist.
-        left, right = 1, pow(2, d) - 1
+        left, right = 1, 2**d - 1
         while left <= right:
             mid = left + (right - left) // 2
             if self.exists(mid, d, root):
