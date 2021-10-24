@@ -64,4 +64,5 @@ class Solution:
                 
             queue.append(i)
         output.append(nums[queue[0]])
+        print("ERROR")
         return output
