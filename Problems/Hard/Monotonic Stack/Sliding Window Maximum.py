@@ -49,20 +49,37 @@ class Solution:
     def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
         output = []
         queue = deque()
+        
+        #Build up initial double ended queue
         for i in range(k):
+            #While last element is less than current element we keep popping
             while queue and nums[queue[-1]] <= nums[i]:
                 queue.pop()
             queue.append(i)
         for i in range(k, len(nums)):
+            #Since we are keeping decreasing queue
+            #First element will always be our maximum so we can append it to the result
             output.append(nums[queue[0]])
             
+            #To make sure we are within the bounds if the first elements
+            #have indices less than or equal to i - k
+            #Consider example
+            #nums = [1,3,-1,-3,5,3,6,7], k = 3
+            #                  ^ Here we are currently at index 4
+            #and index of our maximum we have in our queue is 1 which
+            #corresponds to the value of 3
+            #Since its index is 1 <= 4 - 3 = 1 we need to pop it from the queue
             while queue and queue[0] <= i - k:
                 queue.popleft()
             
+            #To our queue decreasing we pop last element as long as
+            #it's less than current elements
             while queue and nums[queue[-1]] <= nums[i]:
                 queue.pop()
                 
             queue.append(i)
+        #At the end we are always left with queue with at least with 1 element
+        #Append it to the result
         output.append(nums[queue[0]])
         
         return output
