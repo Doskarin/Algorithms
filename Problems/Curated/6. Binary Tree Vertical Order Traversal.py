@@ -63,6 +63,7 @@ class Solution:
         return res
 
     def verticalOrder_bfs(self, root: Optional[TreeNode]) -> List[List[int]]:
+        from collections import deque
         
         res = []
         
