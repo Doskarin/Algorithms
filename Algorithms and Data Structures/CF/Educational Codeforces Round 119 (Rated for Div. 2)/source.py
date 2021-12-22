@@ -56,8 +56,6 @@ The largest triangle is formed by points (0,1), (0,6) and (5,4) — its area is 
 
 
 '''
-import sys
-infile = sys.argv[1] if len(sys.argv) > 1 else 'input.txt'
 
 t = int(input())
 
