@@ -18,12 +18,13 @@ For each operation of the second type print the corresponding sum.
 class SegmentTree:
  
     def __init__(self, n):
+        self.n = n
         self.size = 1
  
         while self.size < n:
             self.size *= 2
  
-        self.tree = [0] *(2*self.size - 1)
+        self.tree = [[float('inf'), 0]] *(2*self.size - 1)
  
     def _build(self, i, v):
         self.build(i, v, 0, 0, self.size)
@@ -31,7 +32,12 @@ class SegmentTree:
     
     def build(self, i, v, x, start, end):
         if end - start == 1:
-            self.tree[x] = v
+            if start < self.n:
+                self.tree[x] = (self.tree[])
+            
+            self.tree[x][0] = v
+            self.tree[x][1] = 1
+            
             return
         
         mid = start + (end - start) // 2
@@ -41,7 +47,15 @@ class SegmentTree:
         else:
             self.build(i, v, 2*x + 2, mid, end)
  
-        self.tree[x] = self.tree[2*x + 1] + self.tree[2*x + 2]
+        self.tree[x] = self.combine(self.tree[2*x + 1], self.tree[2*x + 2])
+
+    def combine(self, s1, s2):
+        if s1[0] < s2[0]:
+            return s1
+        elif s1[0] > s2[0]:
+            return s2
+        else:
+            return s1[0], s1[1] + s2[1]
  
     def _query(self, left, right):
         return self.query(left, right, 0, 0, self.size)
@@ -49,7 +63,10 @@ class SegmentTree:
     
     def query(self, left, right, x, start, end):
         if start >= right or end <= left:
-            return 0
+            p = [None, None]
+            p[0] = float('inf')
+            p[1] = -1
+            return p
  
         if start >= left and end <= right:
             return self.tree[x]
@@ -58,8 +75,18 @@ class SegmentTree:
  
         s1 = self.query(left, right, 2*x + 1, start, mid)
         s2 = self.query(left, right, 2*x + 2, mid, end)
- 
-        return s1 + s2
+        s = [0, 0]
+        if s1[0] < s2[0]:
+            s = s1
+        elif s1[0] > s2[0]:
+            s = s2
+        else:
+            s[0] = s1[0]
+            s[1] = s1[1] + s2[1]
+        
+        return s
+
+
  
  
  
@@ -69,13 +96,14 @@ arr = list(map(int, input().split()))
 st = SegmentTree(n)
 for i in range(len(arr)):
     st._build(i, arr[i])
-#print(st.tree, st._query(0, 3))
+print(st.tree)
 for _ in range(m):
     op, x, y = map(int, input().split())
     if op == 1:
-        st._build(x, y)
+        st._update(x, y)
     else:
-        print(st._query(x, y))
+        ans = st._query(x, y)
+        print(ans[0],ans[1])
 
 
         '''
