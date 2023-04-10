@@ -51,7 +51,7 @@ public:
                     rows[i]++, cols[j]++;
                 }
             }
-            // cout<<s<<endl;
+            
             candidates.push_back(s);
             mp[s]++;
         }
